@@ -9,7 +9,7 @@ user_email=$6
 user_password=$7
 
 
-apt-get -y update
+apt-get update && apt-get -y upgrade
 
 apt-get -y install wget unzip
 
