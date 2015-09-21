@@ -352,7 +352,8 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/install-prestashop.sh"
+            "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/install-prestashop.sh",
+            "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/php.ini"
           ],
           "commandToExecute": "sh install-prestashop.sh"
         }
