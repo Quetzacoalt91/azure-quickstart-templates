@@ -16,6 +16,18 @@
     },
     "dnsNameForPublicIP": {
       "value": "testps01"
+    },
+    "adminFirstName": {
+      "value": "Thomas"
+    },
+    "adminLastName": {
+      "value": "Conte"
+    },
+    "adminEmail": {
+      "value": "thomas@conte.com"
+    },
+    "adminPSPassword": {
+      "value": "Presta123!"
     }
   }
 }

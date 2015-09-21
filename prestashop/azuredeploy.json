@@ -26,6 +26,30 @@
         "description": "Password for the MySQL admin user."
       }
     },
+    "adminFirstName": {
+      "type": "string",
+      "metadata": {
+        "description": "PrestaShop admin first name."
+      }
+    },
+    "adminLastName": {
+      "type": "string",
+      "metadata": {
+        "description": "PrestaShop admin last name."
+      }
+    },
+    "adminEmail": {
+      "type": "string",
+      "metadata": {
+        "description": "PrestaShop admin e-mail."
+      }
+    },
+    "adminPSPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "PrestaShop admin password."
+      }
+    },
     "dnsNameForPublicIP": {
       "type": "string",
       "metadata": {
@@ -49,18 +73,19 @@
     "image_publisher": "Canonical",
     "image_offer": "UbuntuServer",
     "vnet_addr_prefix": "10.0.0.0/16",
-    "subnetName": "Subnet-1",
-    "subnetPrefix": "10.0.0.0/24",
-    "subnet2Name": "Subnet-2",
-    "subnet2Prefix": "10.0.1.0/24",
+    "front_subnet_name": "Subnet-1",
+    "front_subnet_prefix": "10.0.0.0/24",
+    "sql_subnet_name": "Subnet-2",
+    "sql_subnet_prefix": "10.0.1.0/24",
+    "sql_private_ip": "10.0.1.4",
     "storageAccountType": "Standard_LRS",
     "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
-    "virtualNetworkName": "MyVNET",
+    "virtualNetworkName": "vnet-prestashop",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
-    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-    "subnet2Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet2Name'))]",
+    "front_subnet_ref": "[concat(variables('vnetID'),'/subnets/',variables('front_subnet_name'))]",
+    "sql_subnet_ref": "[concat(variables('vnetID'),'/subnets/',variables('sql_subnet_name'))]",
     "front_osdisk_name": "front-osdisk",
     "front_nic_name": "front-nic",
     "front_vm_name": "front-prestashop",
@@ -68,7 +93,8 @@
     "sql_osdisk_name": "sql-osdisk",
     "sql_nic_name": "sql-nic",
     "sql_vm_name": "sql-prestashop",
-    "sql_vm_size": "Standard_A1"
+    "sql_vm_size": "Standard_A1",
+    "fqdn": "[concat(parameters('dnsNameForPublicIP'),'.',resourceGroup().location,'.cloudapp.azure.com')]"
   },
   "resources": [
     {
@@ -105,15 +131,15 @@
         },
         "subnets": [
           {
-            "name": "[variables('subnetName')]",
+            "name": "[variables('front_subnet_name')]",
             "properties": {
-              "addressPrefix": "[variables('subnetPrefix')]"
+              "addressPrefix": "[variables('front_subnet_prefix')]"
             }
           },
           {
-            "name": "[variables('subnet2Name')]",
+            "name": "[variables('sql_subnet_name')]",
             "properties": {
-              "addressPrefix": "[variables('subnet2Prefix')]"
+              "addressPrefix": "[variables('sql_subnet_prefix')]"
             }
           }
         ]
@@ -138,7 +164,7 @@
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
               },
               "subnet": {
-                "id": "[variables('subnetRef')]"
+                "id": "[variables('front_subnet_ref')]"
               }
             }
           }
@@ -158,9 +184,10 @@
           {
             "name": "ipconfig2",
             "properties": {
-              "privateIPAllocationMethod": "Dynamic",
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[variables('sql_private_ip')]",
               "subnet": {
-                "id": "[variables('subnet2Ref')]"
+                "id": "[variables('sql_subnet_ref')]"
               }
             }
           }
@@ -174,7 +201,8 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('front_nic_name'))]"
+        "[concat('Microsoft.Network/networkInterfaces/', variables('front_nic_name'))]",
+        "[concat('Microsoft.Compute/virtualMachines/', variables('sql_vm_name'))]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -255,27 +283,6 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('front_vm_name'),'/install-prestashop')]",
-      "apiVersion": "2015-05-01-preview",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('front_vm_name'))]"
-      ],
-      "properties": {
-        "publisher": "Microsoft.OSTCExtensions",
-        "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.2",
-        "settings": {
-          "fileUris": [
-            "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/install-prestashop.sh",
-            "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/php.ini"
-          ],
-          "commandToExecute": "sh install-prestashop.sh"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('sql_vm_name'),'/install-mysql')]",
       "apiVersion": "2015-05-01-preview",
       "location": "[resourceGroup().location]",
@@ -291,6 +298,27 @@
             "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/install-mysql.sh"
           ],
           "commandToExecute": "[concat('sh install-mysql.sh ', parameters('mySQLPassword'))]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('front_vm_name'),'/install-prestashop')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', variables('front_vm_name'))]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.OSTCExtensions",
+        "type": "CustomScriptForLinux",
+        "typeHandlerVersion": "1.2",
+        "settings": {
+          "fileUris": [
+            "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/install-prestashop.sh",
+            "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/php.ini"
+          ],
+          "commandToExecute": "[concat('sh install-prestashop.sh ', variables('fqdn'), ' ', variables('sql_private_ip'), ' ', parameters('mySQLPassword'), ' ', parameters('adminFirstName'), ' ', parameters('adminLastName'), ' ', parameters('adminEmail'), ' ', parameters('adminPSPassword'))]"
         }
       }
     }
