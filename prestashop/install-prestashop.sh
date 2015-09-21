@@ -14,13 +14,13 @@ apt-get -y update
 apt-get -y install wget unzip
 
 if [ "$WEB_SERVER" == "nginx" ]; then
-	root_path="/usr/share/nginx/www/";
+	root_path="/usr/share/nginx/www";
 
 	# TODO : implement nginx installation
 else
 	logger "Installing Apache + PHP"
 
-	root_path="/var/www/html/";
+	root_path="/var/www/html";
 
 	apt-get -y install apache2 php5 php5-mysql php5-mcrypt php5-curl php5-gd unzip
 	a2enmod rewrite
@@ -51,11 +51,11 @@ chmod -R g+w $root_path;
 
 logger "Installing PrestaShop, this may take a while ..."
 
-php $root_path/install-dev/index_cli.php --domain=$fqdn --db_server=$db_server --db_name="prestashop" --db_user=root \
+php $root_path/install/index_cli.php --domain=$fqdn --db_server=$db_server --db_name="prestashop" --db_user=root \
 			--db_password=$db_password --firstname="$user_firstname" --lastname="$user_lastname" \
 			--password=$user_password --email="$user_email" \
 			--newsletter=0 --send_email=0
 
-chown www-data:www-data -R /var/www/html/
+chown www-data:www-data -R $root_path
 
 logger "PrestaShop in installed !"
