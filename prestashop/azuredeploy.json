@@ -333,6 +333,30 @@
           }
         }
       }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('vmName'),copyIndex(),'/installfrontend')]",
+      "copy": {
+        "name": "extensionLoop",
+        "count": "[variables('numberOfInstances')]"
+      },
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'), copyIndex())]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.OSTCExtensions",
+        "type": "CustomScriptForLinux",
+        "typeHandlerVersion": "1.2",
+        "settings": {
+          "fileUris": [
+            "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/install-prestashop.sh"
+          ],
+          "commandToExecute": "sh install-prestashop.sh"
+        }
+      }
     }
   ]
 }
