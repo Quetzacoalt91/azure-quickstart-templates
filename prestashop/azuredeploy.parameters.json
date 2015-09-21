@@ -1,18 +1,21 @@
 {
-  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "$schema": "http://schema.management.azure.com/schemas/2015-05-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "storageAccountName": {
-      "value": "storageAccountName"
+    "newStorageAccountName": {
+      "value": "testps01"
     },
     "adminUsername": {
-      "value": "admin123"
+      "value": "azureuser"
     },
     "adminPassword": {
-      "value": "Admin123_!"
+      "value": "Pass123!"
     },
-    "dnsNameforLBIP": {
-      "value": "mydnsname"
+    "mySQLPassword": {
+      "value": "MySQL123!"
+    },
+    "dnsNameForPublicIP": {
+      "value": "testps01"
     }
   }
 }
