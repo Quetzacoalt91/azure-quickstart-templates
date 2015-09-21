@@ -4,8 +4,10 @@ apt-get -y update
 
 apt-get -y install wget unzip
 
-if [ "$ENV_REQUEST" == "nginx" ]; then
+if [ "$WEB_SERVER" == "nginx" ]; then
 	root_path="/usr/share/nginx/www/";
+
+	# TODO : implement nginx installation
 else
 	logger "Installing Apache + PHP"
 
