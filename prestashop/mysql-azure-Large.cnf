@@ -2,7 +2,7 @@
 
 bind-address = 0.0.0.0
 
-innodb_buffer_pool_size 		= 5G
+#innodb_buffer_pool_size 		= 5G
 innodb_log_file_size 			= 512M
 max_connections 				= 5000
 innodb_file_per_table 			= 1

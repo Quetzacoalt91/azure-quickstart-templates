@@ -39,9 +39,10 @@ mysql -u $db_user -p$db_password --execute="GRANT ALL ON *.* to $db_user@'localh
 mysql -u $db_user -p$db_password --execute="GRANT ALL ON *.* to $db_user@'%' IDENTIFIED BY '$db_password'; " 2> /dev/null;
 mysql -u $db_user -p$db_password --execute="flush privileges; " 2> /dev/null;
 
+service mysql stop
 # Move custom configuration in place and restart database
 mv mysql-azure-*.cnf /etc/mysql/conf.d
-
-service mysql restart
+rm /var/lib/mysql/ib_logfile*
+service mysql start
 
 logger "MySQL installed"
