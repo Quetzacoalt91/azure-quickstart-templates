@@ -42,7 +42,7 @@ mv /var/lib/mysql "${MOUNT_POINT}"
 ln -s "${MOUNT_POINT}/mysql" /var/lib/mysql
 
 # Allow new directory in AppArmor
-sed -i -e 's=/var/lib/my sql=/datadisks/disk1/mysql=' /etc/apparmor.d/usr.sbin.mysqld
+sed -i -e 's=/var/lib/mysql=/datadisks/disk1/mysql=' /etc/apparmor.d/usr.sbin.mysqld
 
 # Move custom configuration in place and restart database
 mv mysql-azure-*.cnf /etc/mysql/conf.d
