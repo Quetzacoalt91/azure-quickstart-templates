@@ -13,10 +13,6 @@ MOUNT_POINT="/datadisks/disk1"
 # Stripe all the datadisks
 bash ./vm-disk-utils-0.1.sh -s
 
-# Point the MySQL base dir to the striped disk
-mkdir "${MOUNT_POINT}/mysql"
-ln -s "${MOUNT_POINT}/mysql" /var/lib/mysql
-
 logger "Installing MySQL"
 
 export DEBIAN_FRONTEND=noninteractive
@@ -40,9 +36,15 @@ mysql -u $db_user -p$db_password --execute="GRANT ALL ON *.* to $db_user@'%' IDE
 mysql -u $db_user -p$db_password --execute="flush privileges; " 2> /dev/null;
 
 service mysql stop
+
+# Move the MySQL base dir to the striped disk
+mv /var/lib/mysql "${MOUNT_POINT}"
+ln -s "${MOUNT_POINT}/mysql" /var/lib/mysql
+
 # Move custom configuration in place and restart database
 mv mysql-azure-*.cnf /etc/mysql/conf.d
 rm /var/lib/mysql/ib_logfile*
+
 service mysql start
 
 logger "MySQL installed"
