@@ -6,6 +6,17 @@ db_name=prestashop
 
 apt-get -y update
 
+logger "Configuring disks"
+
+MOUNT_POINT="/datadisks/disk1"
+
+# Stripe all the datadisks
+bash ./vm-disk-utils-0.1.sh -s
+
+# Point the MySQL base dir to the striped disk
+mkdir "${MOUNT_POINT}/mysql"
+ln -s "${MOUNT_POINT}/mysql" /var/lib/mysql
+
 logger "Installing MySQL"
 
 export DEBIAN_FRONTEND=noninteractive

@@ -94,17 +94,21 @@
     "sql_nic_name": "sql-nic",
     "sql_vm_name": "sql-prestashop",
     "fqdn": "[concat(parameters('dnsNameForPublicIP'),'.',resourceGroup().location,'.cloudapp.azure.com')]",
+    "sharedBaseUrl": "https://raw.githubusercontent.com/azure/azure-quickstart-templates/master/shared_scripts/ubuntu/",
     "tshirtSizeSmall": {
       "front_vm_size": "Standard_A1",
-      "sql_vm_size": "Standard_A1"
+      "sql_vm_size": "Standard_A1",
+      "data_disk_size": 512
     },
     "tshirtSizeMedium": {
       "front_vm_size": "Standard_A2",
-      "sql_vm_size": "Standard_D1"
+      "sql_vm_size": "Standard_D1",
+      "data_disk_size": 512
     },
     "tshirtSizeLarge": {
       "front_vm_size": "Standard_A3",
-      "sql_vm_size": "Standard_D2"
+      "sql_vm_size": "Standard_D2",
+      "data_disk_size": 1023
     },
     "clusterSpec": "[variables(concat('tshirtSize', parameters('tshirtSize')))]"
   },
@@ -282,7 +286,29 @@
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
-          }
+          },
+          "dataDisks": [
+            {
+              "name": "datadisk0",
+              "diskSizeGB": "[variables('clusterSpec').data_disk_size]",
+              "lun": 0,
+              "caching": "None",
+              "createOption": "Empty",
+              "vhd": {
+                "Uri": "[concat('http://', parameters('newStorageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('sql_vm_name'), '-dataDisk0', '.vhd')]"
+              }
+            },
+            {
+              "name": "datadisk1",
+              "diskSizeGB": "[variables('clusterSpec').data_disk_size]",
+              "lun": 1,
+              "caching": "None",
+              "createOption": "Empty",
+              "vhd": {
+                "Uri": "[concat('http://', parameters('newStorageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('sql_vm_name'), '-dataDisk1', '.vhd')]"
+              }
+            }
+          ]
         },
         "networkProfile": {
           "networkInterfaces": [
@@ -307,7 +333,8 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/install-mysql.sh"
+            "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/install-mysql.sh",
+            "[concat(variables('sharedBaseUrl'), 'vm-disk-utils-0.1.sh')]"
           ],
           "commandToExecute": "[concat('sh install-mysql.sh ', parameters('mySQLPassword'))]"
         }
