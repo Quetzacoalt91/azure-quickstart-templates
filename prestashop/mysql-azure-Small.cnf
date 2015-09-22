@@ -1,5 +1,7 @@
 [mysqld]
 
+bind-address = 0.0.0.0
+
 innodb_buffer_pool_size 		= 1100M
 innodb_log_file_size 			= 512M
 max_connections 				= 5000

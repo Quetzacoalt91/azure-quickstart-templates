@@ -22,8 +22,6 @@ else
 	mysqladmin -u$db_user -p$db_password create $db_name --force;
 fi
 
-sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
-
 mysql -u $db_user -p$db_password --execute="GRANT ALL ON *.* to $db_user@'localhost' IDENTIFIED BY '$db_password'; " 2> /dev/null;
 mysql -u $db_user -p$db_password --execute="GRANT ALL ON *.* to $db_user@'%' IDENTIFIED BY '$db_password'; " 2> /dev/null;
 mysql -u $db_user -p$db_password --execute="flush privileges; " 2> /dev/null;
