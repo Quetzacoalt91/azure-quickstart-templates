@@ -53,25 +53,26 @@
     "dnsNameForPublicIP": {
       "type": "string",
       "metadata": {
-        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+        "description": "Unique DNS Name for the Public IP used to access the Web Front-End."
       }
     },
-    "ubuntuOSVersion": {
+    "tshirtSize": {
       "type": "string",
-      "defaultValue": "14.04.2-LTS",
+      "defaultValue": "Small",
       "allowedValues": [
-        "12.04.5-LTS",
-        "14.04.2-LTS",
-        "15.04"
+        "Small",
+        "Medium",
+        "Large"
       ],
       "metadata": {
-        "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version. Allowed values: 12.04.5-LTS, 14.04.2-LTS, 15.04."
+        "description": "T-shirt size of the PrestaShop cluster"
       }
     }
   },
   "variables": {
     "image_publisher": "Canonical",
     "image_offer": "UbuntuServer",
+    "ubuntu_version": "14.04.2-LTS",
     "vnet_addr_prefix": "10.0.0.0/16",
     "front_subnet_name": "Subnet-1",
     "front_subnet_prefix": "10.0.0.0/24",
@@ -89,12 +90,23 @@
     "front_osdisk_name": "front-osdisk",
     "front_nic_name": "front-nic",
     "front_vm_name": "front-prestashop",
-    "front_vm_size": "Standard_A1",
     "sql_osdisk_name": "sql-osdisk",
     "sql_nic_name": "sql-nic",
     "sql_vm_name": "sql-prestashop",
-    "sql_vm_size": "Standard_A1",
-    "fqdn": "[concat(parameters('dnsNameForPublicIP'),'.',resourceGroup().location,'.cloudapp.azure.com')]"
+    "fqdn": "[concat(parameters('dnsNameForPublicIP'),'.',resourceGroup().location,'.cloudapp.azure.com')]",
+    "tshirtSizeSmall": {
+      "front_vm_size": "Standard_A1",
+      "sql_vm_size": "Standard_A1"
+    },
+    "tshirtSizeMedium": {
+      "front_vm_size": "Standard_A2",
+      "sql_vm_size": "Standard_D1"
+    },
+    "tshirtSizeLarge": {
+      "front_vm_size": "Standard_A3",
+      "sql_vm_size": "Standard_D2"
+    },
+    "clusterSpec": "[variables(concat('tshirtSize', parameters('tshirtSize')))]"
   },
   "resources": [
     {
@@ -206,7 +218,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[variables('front_vm_size')]"
+          "vmSize": "[variables('clusterSpec').front_vm_size]"
         },
         "osProfile": {
           "computername": "[variables('front_vm_name')]",
@@ -217,7 +229,7 @@
           "imageReference": {
             "publisher": "[variables('image_publisher')]",
             "offer": "[variables('image_offer')]",
-            "sku": "[parameters('ubuntuOSVersion')]",
+            "sku": "[variables('ubuntu_version')]",
             "version": "latest"
           },
           "osDisk": {
@@ -249,7 +261,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[variables('sql_vm_size')]"
+          "vmSize": "[variables('clusterSpec').sql_vm_size]"
         },
         "osProfile": {
           "computername": "[variables('sql_vm_name')]",
@@ -260,7 +272,7 @@
           "imageReference": {
             "publisher": "[variables('image_publisher')]",
             "offer": "[variables('image_offer')]",
-            "sku": "[parameters('ubuntuOSVersion')]",
+            "sku": "[variables('ubuntu_version')]",
             "version": "latest"
           },
           "osDisk": {
