@@ -95,6 +95,7 @@
     "sql_vm_name": "sql-prestashop",
     "fqdn": "[concat(parameters('dnsNameForPublicIP'),'.',resourceGroup().location,'.cloudapp.azure.com')]",
     "sharedBaseUrl": "https://raw.githubusercontent.com/azure/azure-quickstart-templates/master/shared_scripts/ubuntu/",
+    "templateBaseUrl": "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/",
     "tshirtSizeSmall": {
       "front_vm_size": "Standard_A1",
       "sql_vm_size": "Standard_A1",
@@ -333,8 +334,9 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/install-mysql.sh",
-            "[concat(variables('sharedBaseUrl'), 'vm-disk-utils-0.1.sh')]"
+            "[concat(variables('templateBaseUrl'), 'install-mysql.sh')]",
+            "[concat(variables('sharedBaseUrl'), 'vm-disk-utils-0.1.sh')]",
+            "[concat(variables('templateBaseUrl'), 'mysql-azure-', parameters('tshirtSize'), '.cnf')]"
           ],
           "commandToExecute": "[concat('sh install-mysql.sh ', parameters('mySQLPassword'))]"
         }
@@ -354,8 +356,8 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/install-prestashop.sh",
-            "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/php.ini"
+            "[concat(variables('templateBaseUrl'), 'install-prestashop.sh')]",
+            "[concat(variables('templateBaseUrl'), 'php.ini')]"
           ],
           "commandToExecute": "[concat('sh install-prestashop.sh ', variables('fqdn'), ' ', variables('sql_private_ip'), ' ', parameters('mySQLPassword'), ' ', parameters('adminFirstName'), ' ', parameters('adminLastName'), ' ', parameters('adminEmail'), ' ', parameters('adminPSPassword'))]"
         }

@@ -25,8 +25,10 @@ export DEBIAN_FRONTEND=noninteractive
 echo mysql-server-5.6 mysql-server/root_password password $db_password | debconf-set-selections
 echo mysql-server-5.6 mysql-server/root_password_again password $db_password | debconf-set-selections
 
-apt-get -y install mysql-server mysql-client
+# Install MySQL
+apt-get -y install mysql-server-5.6 mysql-client-5.6
 
+# Create database, grant privileges
 if [ "$db_password" == "" ]; then
 	mysqladmin -u$DB_USER create $db_name --force;
 else
@@ -36,6 +38,9 @@ fi
 mysql -u $db_user -p$db_password --execute="GRANT ALL ON *.* to $db_user@'localhost' IDENTIFIED BY '$db_password'; " 2> /dev/null;
 mysql -u $db_user -p$db_password --execute="GRANT ALL ON *.* to $db_user@'%' IDENTIFIED BY '$db_password'; " 2> /dev/null;
 mysql -u $db_user -p$db_password --execute="flush privileges; " 2> /dev/null;
+
+# Move custom configuration in place and restart database
+mv mysql-azure-*.cnf /etc/mysql/conf.d
 
 service mysql restart
 
