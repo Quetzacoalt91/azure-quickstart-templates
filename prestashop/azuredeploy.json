@@ -218,8 +218,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('front_nic_name'))]",
-        "[concat('Microsoft.Compute/virtualMachines/', variables('sql_vm_name'))]"
+        "[concat('Microsoft.Network/networkInterfaces/', variables('front_nic_name'))]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -348,7 +347,8 @@
       "apiVersion": "2015-05-01-preview",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('front_vm_name'))]"
+        "[concat('Microsoft.Compute/virtualMachines/', variables('front_vm_name'))]",
+        "[concat('Microsoft.Compute/virtualMachines/', variables('sql_vm_name'), '/extensions/install-mysql')]"
       ],
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",
