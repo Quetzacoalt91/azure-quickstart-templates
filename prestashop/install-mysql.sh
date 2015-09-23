@@ -25,7 +25,7 @@ echo mysql-server-5.6 mysql-server/root_password_again password $db_password | d
 apt-get -y install mysql-server-5.6 mysql-client-5.6
 
 # Create database, grant privileges
-if [ "$db_password" == "" ]; then
+if [ "$db_password" = "" ]; then
 	mysqladmin -u$DB_USER create $db_name --force;
 else
 	mysqladmin -u$db_user -p$db_password create $db_name --force;
