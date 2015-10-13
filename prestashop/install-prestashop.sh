@@ -13,7 +13,7 @@ apt-get -y update
 
 apt-get -y install wget unzip
 
-if [ "$WEB_SERVER" == "nginx" ]; then
+if [ "$WEB_SERVER" = "nginx" ]; then
 	root_path="/usr/share/nginx/www";
 
 	# TODO : implement nginx installation
