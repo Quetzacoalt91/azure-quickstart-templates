@@ -22,7 +22,7 @@ else
 
 	root_path="/var/www/html";
 
-	apt-get -y install apache2 php5 php5-mysql php5-mcrypt php5-curl php5-gd unzip
+	apt-get -y install apache2 php5 php5-cli php5-mysql php5-mcrypt php5-curl php5-gd unzip
 	a2enmod rewrite
 	
 	mv ./php.ini /etc/php5/apache2/php.ini
