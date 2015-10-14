@@ -23,7 +23,7 @@ else
 	root_path="/var/www/html";
 
 	apt-get -y install apache2 unzip
-	apt-get -y install php5 php5-cli php-fpm php5-mysql php5-mcrypt php5-curl php5-gd
+	apt-get -y install php5 php5-fpm php5-cli php5-mysql php5-mcrypt php5-curl php5-gd
 	a2dismod php5 mpm_prefork
 	a2enmod rewrite actions fastcgi alias mpm_worker
 
