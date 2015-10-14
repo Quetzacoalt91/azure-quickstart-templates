@@ -357,6 +357,7 @@
         "settings": {
           "fileUris": [
             "[concat(variables('templateBaseUrl'), 'install-prestashop.sh')]",
+            "[concat(variables('templateBaseUrl'), '000-default.conf')]",
             "[concat(variables('templateBaseUrl'), 'php.ini')]"
           ],
           "commandToExecute": "[concat('sh install-prestashop.sh ', variables('fqdn'), ' ', variables('sql_private_ip'), ' ', parameters('mySQLPassword'), ' ', parameters('adminFirstName'), ' ', parameters('adminLastName'), ' ', parameters('adminEmail'), ' ', parameters('adminPSPassword'))]"
