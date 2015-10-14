@@ -1,0 +1,157 @@
+{
+  "handler": "Microsoft.Compute.MultiVm",
+  "version": "0.0.1-preview",
+  "parameters": {
+    "basics": [
+      {
+        "name": "tshirtSize",
+        "type": "Microsoft.Common.DropDown",
+        "label": "Topology size",
+        "defaultValue": "Small",
+        "toolTip": "The size of the cluster.",
+        "constraints": {
+          "allowedValues": [
+            {
+              "label": "Small (A1 + A1)",
+              "value": "Small"
+            },
+            {
+              "label": "Medium (A2 + D1)",
+              "value": "Medium"
+            },
+            {
+              "label": "Large (A3 + D2)",
+              "value": "Large"
+            }
+          ]
+        }
+      },
+      {
+        "name": "newStorageAccountName",
+        "type": "Microsoft.Compute.StorageAccountSelector",
+        "label": "Storage account",
+        "toolTip": "Storage account where the VM disks will be stored."
+      },
+      {
+        "name": "dnsNameForPublicIP",
+        "type": "Microsoft.Compute.TextBox",
+        "label": "Username",
+        "toolTip": "Admin username for the virtual machines."
+      },
+      {
+        "name": "adminUsername",
+        "type": "Microsoft.Compute.UserNameTextBox",
+        "label": "Username",
+        "toolTip": "Admin username for the virtual machines."
+      },
+      {
+        "name": "adminPassword",
+        "type": "Microsoft.Common.PasswordBox",
+        "label": {
+          "password": "Password",
+          "confirmPassword": "Confirm password"
+        },
+        "toolTip": "Admin password for the virtual machines.",
+        "constraints": {
+          "required": true,
+          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
+          "validationMessage": "The password must be between 6 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
+        },
+        "options": {
+          "hideConfirmation": false
+        }
+      },
+      {
+        "name": "mySQLPassword",
+        "type": "Microsoft.Common.PasswordBox",
+        "label": {
+          "password": "MySQL Password",
+          "confirmPassword": "Confirm password"
+        },
+        "toolTip": "The password for the MySQL administrator account.",
+        "constraints": {
+          "required": true,
+          "regex": "",
+          "validationMessage": ""
+        },
+        "options": {
+          "hideConfirmation": false
+        }
+      }
+    ],
+    "steps": [
+      {
+        "name": "prestashopInfo",
+        "label": "PrestaShop information",
+        "subLabel": {
+          "preValidation": "Provide PrestaShop information",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "PrestaShop information",
+        "elements": [
+          {
+            "name": "adminFirstName",
+            "type": "Microsoft.Compute.UserNameTextBox",
+            "label": "First name",
+            "defaultValue": "",
+            "toolTip": "PrestaShop administrator first name.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "adminLastName",
+            "type": "Microsoft.Compute.UserNameTextBox",
+            "label": "Last name",
+            "defaultValue": "",
+            "toolTip": "PrestaShop administrator last name",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "adminEmail",
+            "type": "Microsoft.Compute.UserNameTextBox",
+            "label": "E-mail",
+            "defaultValue": "",
+            "toolTip": "PrestaShop administrator e-mail",
+            "constraints": {
+              "required": true,
+              "regex": ""
+            }
+          },
+          {
+            "name": "adminPSPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "Password",
+              "confirmPassword": "Confirm password"
+            },
+            "toolTip": "PrestaShop administrator password",
+            "constraints": {
+              "required": true,
+              "regex": "",
+              "validationMessage": ""
+            },
+            "options": {
+              "hideConfirmation": false
+            }
+          }
+        ]
+      }
+    ],
+    "outputs": {
+      "tshirtSize": "[basics('tshirtSize')]",
+      "newStorageAccountName": "[basics('newStorageAccountName')]",
+      "adminUsername": "[basics('adminUsername')]",
+      "adminPassword": "[basics('adminPassword')]",
+      "mySQLPassword": "[basics('mySQLPassword')]",
+      "dnsNameForPublicIP": "[basics('dnsNameForPublicIP')]",
+      "adminFirstName": "[steps('prestashopInfo').adminFirstName]",
+      "adminLastName": "[steps('prestashopInfo').adminLastName]",
+      "adminEmail": "[steps('prestashopInfo').adminEmail]",
+      "adminPSPassword": "[steps('prestashopInfo').adminPSPassword]",
+      "region": "[location()]"
+    }
+  }
+}
