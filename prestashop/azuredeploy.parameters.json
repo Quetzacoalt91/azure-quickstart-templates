@@ -2,8 +2,11 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-05-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "tshirtSize": {
+      "value": "Large"
+    },
     "newStorageAccountName": {
-      "value": "testps01"
+      "value": "testps1410lar"
     },
     "adminUsername": {
       "value": "azureuser"
@@ -12,10 +15,10 @@
       "value": "Pass123!"
     },
     "mySQLPassword": {
-      "value": "MySQL123!"
+      "value": "MySQL1234"
     },
     "dnsNameForPublicIP": {
-      "value": "testps01"
+      "value": "testps1410lar"
     },
     "adminFirstName": {
       "value": "Thomas"
