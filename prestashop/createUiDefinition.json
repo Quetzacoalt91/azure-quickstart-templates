@@ -28,7 +28,7 @@
       },
       {
         "name": "newStorageAccountName",
-        "type": "Microsoft.Compute.StorageAccountSelector",
+        "type": "Microsoft.Storage.StorageAccountSelector",
         "label": "Storage account",
         "toolTip": "Storage account where the VM disks will be stored.",
         "constraints": {
