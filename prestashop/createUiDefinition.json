@@ -30,20 +30,29 @@
         "name": "newStorageAccountName",
         "type": "Microsoft.Compute.StorageAccountSelector",
         "label": "Storage account",
-        "toolTip": "Storage account where the VM disks will be stored."
+        "toolTip": "Storage account where the VM disks will be stored.",
+        "constraints": {
+          "required": true
+        }
       },
       {
         "name": "dnsNameForPublicIP",
-        "type": "Microsoft.Compute.TextBox",
-        "label": "Username",
-        "toolTip": "Admin username for the virtual machines."
+        "type": "Microsoft.Common.TextBox",
+        "label": "DNS name",
+        "toolTip": "Admin username for the virtual machines.",
+        "constraints": {
+          "required": true
+        }
       },
       {
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
         "label": "Username",
         "toolTip": "Admin username for the virtual machines.",
-        "osPlatform": "Linux"
+        "osPlatform": "Linux",
+        "constraints": {
+          "required": true
+        }
       },
       {
         "name": "adminPassword",
@@ -92,7 +101,7 @@
         "elements": [
           {
             "name": "adminFirstName",
-            "type": "Microsoft.Compute.TextBox",
+            "type": "Microsoft.Common.TextBox",
             "label": "First name",
             "defaultValue": "",
             "toolTip": "PrestaShop administrator first name.",
@@ -102,7 +111,7 @@
           },
           {
             "name": "adminLastName",
-            "type": "Microsoft.Compute.TextBox",
+            "type": "Microsoft.Common.TextBox",
             "label": "Last name",
             "defaultValue": "",
             "toolTip": "PrestaShop administrator last name",
@@ -112,7 +121,7 @@
           },
           {
             "name": "adminEmail",
-            "type": "Microsoft.Compute.TextBox",
+            "type": "Microsoft.Common.TextBox",
             "label": "E-mail",
             "defaultValue": "",
             "toolTip": "PrestaShop administrator e-mail",
