@@ -42,7 +42,8 @@
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
         "label": "Username",
-        "toolTip": "Admin username for the virtual machines."
+        "toolTip": "Admin username for the virtual machines.",
+        "osPlatform": "Linux"
       },
       {
         "name": "adminPassword",
@@ -91,7 +92,7 @@
         "elements": [
           {
             "name": "adminFirstName",
-            "type": "Microsoft.Compute.UserNameTextBox",
+            "type": "Microsoft.Compute.TextBox",
             "label": "First name",
             "defaultValue": "",
             "toolTip": "PrestaShop administrator first name.",
@@ -101,7 +102,7 @@
           },
           {
             "name": "adminLastName",
-            "type": "Microsoft.Compute.UserNameTextBox",
+            "type": "Microsoft.Compute.TextBox",
             "label": "Last name",
             "defaultValue": "",
             "toolTip": "PrestaShop administrator last name",
@@ -111,7 +112,7 @@
           },
           {
             "name": "adminEmail",
-            "type": "Microsoft.Compute.UserNameTextBox",
+            "type": "Microsoft.Compute.TextBox",
             "label": "E-mail",
             "defaultValue": "",
             "toolTip": "PrestaShop administrator e-mail",
