@@ -44,7 +44,7 @@
           "preValidation": "Required",
           "postValidation": "Done"
         },
-        "bladeTitle": "Storage account and system credentials",
+        "bladeTitle": "Deployment Parameters",
         "elements": [
           {
             "name": "newStorageAccountName",
@@ -108,7 +108,7 @@
           "preValidation": "Required",
           "postValidation": "Done"
         },
-        "bladeTitle": "PrestaShop credentials and details",
+        "bladeTitle": "PrestaShop Parameters",
         "elements": [
           {
             "name": "adminFirstName",
