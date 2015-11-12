@@ -6,9 +6,9 @@
       {
         "name": "tshirtSize",
         "type": "Microsoft.Common.DropDown",
-        "label": "Topology size",
+        "label": "Topology Size",
         "defaultValue": "Small (A1 + A1)",
-        "toolTip": "The size of the cluster.",
+        "toolTip": "The size of the virtual machines to use in the cluster.",
         "constraints": {
           "allowedValues": [
             {
@@ -29,8 +29,8 @@
       {
         "name": "dnsNameForPublicIP",
         "type": "Microsoft.Common.TextBox",
-        "label": "DNS name",
-        "toolTip": "Public DNS name for the deployment.",
+        "label": "DNS prefix",
+        "toolTip": "This prefix will determine the public DNS name for the deployment.",
         "constraints": {
           "required": true
         }
@@ -39,9 +39,9 @@
     "steps": [
       {
         "name": "deploymentDetails",
-        "label": "Deployment details",
+        "label": "Deployment Parameters",
         "subLabel": {
-          "preValidation": "Provide deployment details",
+          "preValidation": "Storage account and system credentials",
           "postValidation": "Done"
         },
         "bladeTitle": "Deployment details",
@@ -58,8 +58,8 @@
           {
             "name": "adminUsername",
             "type": "Microsoft.Compute.UserNameTextBox",
-            "label": "Username",
-            "toolTip": "Admin username for the virtual machines.",
+            "label": "VM username",
+            "toolTip": "Administrative username for the virtual machines.",
             "osPlatform": "Linux",
             "constraints": {
               "required": true
@@ -69,10 +69,10 @@
             "name": "adminPassword",
             "type": "Microsoft.Common.PasswordBox",
             "label": {
-              "password": "Password",
-              "confirmPassword": "Confirm password"
+              "password": "VM password",
+              "confirmPassword": "Confirm VM password"
             },
-            "toolTip": "Admin password for the virtual machines.",
+            "toolTip": "Administrative password for the virtual machines.",
             "constraints": {
               "required": true,
               "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
@@ -86,8 +86,8 @@
             "name": "mySQLPassword",
             "type": "Microsoft.Common.PasswordBox",
             "label": {
-              "password": "MySQL Password",
-              "confirmPassword": "Confirm password"
+              "password": "MySQL password",
+              "confirmPassword": "Confirm MySQL password"
             },
             "toolTip": "The password for the MySQL administrator account.",
             "constraints": {
@@ -103,9 +103,9 @@
       },
       {
         "name": "prestashopInfo",
-        "label": "PrestaShop information",
+        "label": "PrestaShop Parameters",
         "subLabel": {
-          "preValidation": "Provide PrestaShop information",
+          "preValidation": "PrestaShop credentials and details",
           "postValidation": "Done"
         },
         "bladeTitle": "PrestaShop information",
@@ -167,7 +167,7 @@
       "adminUsername": "[steps('deploymentDetails').adminUsername]",
       "adminPassword": "[steps('deploymentDetails').adminPassword]",
       "mySQLPassword": "[steps('deploymentDetails').mySQLPassword]",
-      "newStorageAccountName": "[steps('deploymentDetails').newStorageAccountName]",
+      "newStorageAccountName": "[steps('deploymentDetails').newStorageAccountName.name]",
       "adminFirstName": "[steps('prestashopInfo').adminFirstName]",
       "adminLastName": "[steps('prestashopInfo').adminLastName]",
       "adminEmail": "[steps('prestashopInfo').adminEmail]",
