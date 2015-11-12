@@ -30,66 +30,77 @@
         "name": "dnsNameForPublicIP",
         "type": "Microsoft.Common.TextBox",
         "label": "DNS name",
-        "toolTip": "Admin username for the virtual machines.",
-        "constraints": {
-          "required": true
-        }
-      },
-      {
-        "name": "adminUsername",
-        "type": "Microsoft.Compute.UserNameTextBox",
-        "label": "Username",
-        "toolTip": "Admin username for the virtual machines.",
-        "osPlatform": "Linux",
-        "constraints": {
-          "required": true
-        }
-      },
-      {
-        "name": "adminPassword",
-        "type": "Microsoft.Common.PasswordBox",
-        "label": {
-          "password": "Password",
-          "confirmPassword": "Confirm password"
-        },
-        "toolTip": "Admin password for the virtual machines.",
-        "constraints": {
-          "required": true,
-          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
-          "validationMessage": "The password must be between 6 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
-        },
-        "options": {
-          "hideConfirmation": false
-        }
-      },
-      {
-        "name": "mySQLPassword",
-        "type": "Microsoft.Common.PasswordBox",
-        "label": {
-          "password": "MySQL Password",
-          "confirmPassword": "Confirm password"
-        },
-        "toolTip": "The password for the MySQL administrator account.",
-        "constraints": {
-          "required": true,
-          "regex": "",
-          "validationMessage": ""
-        },
-        "options": {
-          "hideConfirmation": false
-        }
-      },
-      {
-        "name": "newStorageAccountName",
-        "type": "Microsoft.Storage.StorageAccountSelector",
-        "label": "Storage account",
-        "toolTip": "Storage account where the VM disks will be stored.",
+        "toolTip": "Public DNS name for the deployment.",
         "constraints": {
           "required": true
         }
       }
     ],
     "steps": [
+      {
+        "name": "deploymentDetails",
+        "label": "Deployment details",
+        "subLabel": {
+          "preValidation": "Provide deployment details",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "Deployment details",
+        "elements": [
+          {
+            "name": "newStorageAccountName",
+            "type": "Microsoft.Storage.StorageAccountSelector",
+            "label": "Storage account",
+            "toolTip": "Storage account where the VM disks will be stored.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "adminUsername",
+            "type": "Microsoft.Compute.UserNameTextBox",
+            "label": "Username",
+            "toolTip": "Admin username for the virtual machines.",
+            "osPlatform": "Linux",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "adminPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "Password",
+              "confirmPassword": "Confirm password"
+            },
+            "toolTip": "Admin password for the virtual machines.",
+            "constraints": {
+              "required": true,
+              "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
+              "validationMessage": "The password must be between 6 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
+            },
+            "options": {
+              "hideConfirmation": false
+            }
+          },
+          {
+            "name": "mySQLPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "MySQL Password",
+              "confirmPassword": "Confirm password"
+            },
+            "toolTip": "The password for the MySQL administrator account.",
+            "constraints": {
+              "required": true,
+              "regex": "",
+              "validationMessage": ""
+            },
+            "options": {
+              "hideConfirmation": false
+            }
+          }
+        ]
+      },
       {
         "name": "prestashopInfo",
         "label": "PrestaShop information",
@@ -152,11 +163,11 @@
     ],
     "outputs": {
       "tshirtSize": "[basics('tshirtSize')]",
-      "newStorageAccountName": "[basics('newStorageAccountName')]",
-      "adminUsername": "[basics('adminUsername')]",
-      "adminPassword": "[basics('adminPassword')]",
-      "mySQLPassword": "[basics('mySQLPassword')]",
       "dnsNameForPublicIP": "[basics('dnsNameForPublicIP')]",
+      "adminUsername": "[deploymentDetails('adminUsername')]",
+      "adminPassword": "[deploymentDetails('adminPassword')]",
+      "mySQLPassword": "[deploymentDetails('mySQLPassword')]",
+      "newStorageAccountName": "[deploymentDetails('newStorageAccountName')]",
       "adminFirstName": "[steps('prestashopInfo').adminFirstName]",
       "adminLastName": "[steps('prestashopInfo').adminLastName]",
       "adminEmail": "[steps('prestashopInfo').adminEmail]",
