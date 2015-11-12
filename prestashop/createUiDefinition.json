@@ -41,10 +41,10 @@
         "name": "deploymentDetails",
         "label": "Deployment Parameters",
         "subLabel": {
-          "preValidation": "Storage account and system credentials",
+          "preValidation": "Required",
           "postValidation": "Done"
         },
-        "bladeTitle": "Deployment details",
+        "bladeTitle": "Storage account and system credentials",
         "elements": [
           {
             "name": "newStorageAccountName",
@@ -105,10 +105,10 @@
         "name": "prestashopInfo",
         "label": "PrestaShop Parameters",
         "subLabel": {
-          "preValidation": "PrestaShop credentials and details",
+          "preValidation": "Required",
           "postValidation": "Done"
         },
-        "bladeTitle": "PrestaShop information",
+        "bladeTitle": "PrestaShop credentials and details",
         "elements": [
           {
             "name": "adminFirstName",
