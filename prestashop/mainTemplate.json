@@ -70,9 +70,12 @@
     }
   },
   "variables": {
-    "image_publisher": "Canonical",
-    "image_offer": "UbuntuServer",
-    "ubuntu_version": "14.04.3-LTS",
+    "ps_image_publisher": "prestashop",
+    "ps_image_offer": "ubuntu-base-for-prestashop",
+    "ps_image_sku": "ubuntu_base",
+    "ubuntu_image_publisher": "Canonical",
+    "ubuntu_image_offer": "UbuntuServer",
+    "ubuntu_image_sku": "14.04.3-LTS",
     "vnet_addr_prefix": "10.0.0.0/16",
     "front_subnet_name": "Subnet-1",
     "front_subnet_prefix": "10.0.0.0/24",
@@ -220,6 +223,11 @@
         "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
         "[concat('Microsoft.Network/networkInterfaces/', variables('front_nic_name'))]"
       ],
+      "plan": {
+        "publisher": "[variables('ps_image_publisher')]",
+        "product": "[variables('ps_image_offer')]",
+        "name": "[variables('ps_image_sku')]"
+      },
       "properties": {
         "hardwareProfile": {
           "vmSize": "[variables('clusterSpec').front_vm_size]"
@@ -231,9 +239,9 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "[variables('image_publisher')]",
-            "offer": "[variables('image_offer')]",
-            "sku": "[variables('ubuntu_version')]",
+            "publisher": "[variables('ps_image_publisher')]",
+            "offer": "[variables('ps_image_offer')]",
+            "sku": "[variables('ps_image_sku')]",
             "version": "latest"
           },
           "osDisk": {
@@ -274,9 +282,9 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "[variables('image_publisher')]",
-            "offer": "[variables('image_offer')]",
-            "sku": "[variables('ubuntu_version')]",
+            "publisher": "[variables('ubuntu_image_publisher')]",
+            "offer": "[variables('ubuntu_image_offer')]",
+            "sku": "[variables('ubuntu_image_sku')]",
             "version": "latest"
           },
           "osDisk": {
