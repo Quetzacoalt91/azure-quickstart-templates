@@ -239,7 +239,7 @@
           "vmSize": "[variables('clusterSpec').front_vm_size]"
         },
         "osProfile": {
-          "computername": "[variables('front_vm_name')]",
+          "computerName": "[variables('front_vm_name')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -282,7 +282,7 @@
           "vmSize": "[variables('clusterSpec').sql_vm_size]"
         },
         "osProfile": {
-          "computername": "[variables('sql_vm_name')]",
+          "computerName": "[variables('sql_vm_name')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -309,7 +309,7 @@
               "caching": "None",
               "createOption": "Empty",
               "vhd": {
-                "Uri": "[concat('http://', parameters('newStorageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('sql_vm_name'), '-dataDisk0', '.vhd')]"
+                "uri": "[concat('http://', parameters('newStorageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('sql_vm_name'), '-dataDisk0', '.vhd')]"
               }
             },
             {
@@ -319,7 +319,7 @@
               "caching": "None",
               "createOption": "Empty",
               "vhd": {
-                "Uri": "[concat('http://', parameters('newStorageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('sql_vm_name'), '-dataDisk1', '.vhd')]"
+                "uri": "[concat('http://', parameters('newStorageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('sql_vm_name'), '-dataDisk1', '.vhd')]"
               }
             }
           ]
