@@ -89,45 +89,6 @@
         "bladeTitle": "Deployment Parameters",
         "elements": [
           {
-            "name": "virtualNetwork",
-            "type": "Microsoft.Network.VirtualNetworkCombo",
-            "label": {
-              "virtualNetwork": "Virtual network",
-              "subnets": "Subnets"
-            },
-            "defaultValue": {
-              "name": "vnet-prestashop",
-              "addressPrefixSize": "/16"
-            },
-            "constraints": {
-              "minAddressPrefixSize": "/16"
-            },
-            "subnets": {
-              "subnet1": {
-                "label": "Front subnet",
-                "defaultValue": {
-                  "name": "Subnet-1",
-                  "addressPrefixSize": "/24"
-                },
-                "constraints": {
-                  "minAddressPrefixSize": "/24",
-                  "requireContiguousAddresses": true
-                }
-              },
-              "subnet2": {
-                "label": "MySQL subnet",
-                "defaultValue": {
-                  "name": "Subnet-2",
-                  "addressPrefixSize": "/24"
-                },
-                "constraints": {
-                  "minAddressPrefixSize": "/24",
-                  "requireContiguousAddresses": true
-                }
-              }
-            }
-          },
-          {
             "name": "publicIp",
             "type": "Microsoft.Network.PublicIpAddressCombo",
             "label": {
@@ -218,13 +179,6 @@
     ],
     "outputs": {
       "tshirtSize": "[basics('tshirtSize')]",
-      "vnetNewOrExisting": "[steps('deploymentDetails').virtualNetwork.newOrExisting]",
-      "vnetName": "[steps('deploymentDetails').virtualNetwork.name]",
-      "vnetPrefix": "[steps('deploymentDetails').virtualNetwork.addressPrefix]",
-      "vnetSubnet1Name": "[steps('deploymentDetails').virtualNetwork.subnets.subnet1.name]",
-      "vnetSubnet1Prefix": "[steps('deploymentDetails').virtualNetwork.subnets.subnet1.addressPrefix]",
-      "vnetSubnet2Name": "[steps('deploymentDetails').virtualNetwork.subnets.subnet2.name]",
-      "vnetSubnet2Prefix": "[steps('deploymentDetails').virtualNetwork.subnets.subnet2.addressPrefix]",
       "adminUsername": "[basics('adminUsername')]",
       "authenticationType": "[basics('section1').adminCredentials.authenticationType]",
       "adminPassword": "[basics('section1').adminCredentials.password]",
