@@ -111,7 +111,6 @@
                 },
                 "constraints": {
                   "minAddressPrefixSize": "/24",
-                  "minAddressCount": 12,
                   "requireContiguousAddresses": true
                 }
               },
@@ -119,11 +118,10 @@
                 "label": "MySQL subnet",
                 "defaultValue": {
                   "name": "Subnet-2",
-                  "addressPrefixSize": "/26"
+                  "addressPrefixSize": "/24"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/26",
-                  "minAddressCount": 8,
+                  "minAddressPrefixSize": "/24",
                   "requireContiguousAddresses": true
                 }
               }
