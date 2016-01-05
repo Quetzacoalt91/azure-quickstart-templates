@@ -2,6 +2,14 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "templateBaseUrl": { 
+      "type": "string",
+      "metadata": {
+        "description": "Base URL for Marketplace", 
+        "artifactsBaseUrl": "" 
+      },
+      "defaultValue": "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop" 
+    },
     "location": {
       "type": "string",
       "metadata": {
@@ -134,8 +142,7 @@
     "sql_vm_name": "sql-prestashop",
     "fqdn": "[concat(parameters('dnsNameForPublicIP'),'.',parameters('location'),'.cloudapp.azure.com')]",
     "sharedBaseUrl": "https://raw.githubusercontent.com/tomconte/azure-quickstart-templates/master/shared_scripts/ubuntu/",
-    "templateBaseUrl": "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/",
-    "storageTemplateLink": "[concat(variables('templateBaseUrl'), parameters('storageAccountNewOrExisting'), 'StorageAccount.json')]",
+    "storageTemplateLink": "[concat(variables('templateBaseUrl'), '/', parameters('storageAccountNewOrExisting'), 'StorageAccount.json')]",
     "osProfile_front_password": {
       "computerName": "[variables('front_vm_name')]",
       "adminUsername": "[parameters('adminUsername')]",
@@ -424,9 +431,9 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "[concat(variables('templateBaseUrl'), 'install-mysql.sh')]",
+            "[concat(variables('templateBaseUrl'), '/install-mysql.sh')]",
             "[concat(variables('sharedBaseUrl'), 'vm-disk-utils-0.1.sh')]",
-            "[concat(variables('templateBaseUrl'), 'mysql-azure-', parameters('tshirtSize'), '.cnf')]"
+            "[concat(variables('templateBaseUrl'), '/mysql-azure-', parameters('tshirtSize'), '.cnf')]"
           ],
           "commandToExecute": "[concat('sh install-mysql.sh ', parameters('mySQLPassword'))]"
         }
@@ -447,9 +454,9 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "[concat(variables('templateBaseUrl'), 'install-prestashop.sh')]",
-            "[concat(variables('templateBaseUrl'), '000-default.conf')]",
-            "[concat(variables('templateBaseUrl'), 'php.ini')]"
+            "[concat(variables('templateBaseUrl'), '/install-prestashop.sh')]",
+            "[concat(variables('templateBaseUrl'), '/000-default.conf')]",
+            "[concat(variables('templateBaseUrl'), '/php.ini')]"
           ],
           "commandToExecute": "[concat('sh install-prestashop.sh ', variables('fqdn'), ' ', variables('sql_private_ip'), ' ', parameters('mySQLPassword'), ' ', parameters('adminFirstName'), ' ', parameters('adminLastName'), ' ', parameters('adminEmail'), ' ', parameters('adminPSPassword'))]"
         }
