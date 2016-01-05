@@ -116,10 +116,13 @@
             "label": "Storage account",
             "toolTip": "Storage account where the VM disks will be stored.",
             "defaultValue": {
-              "type": "Premium_LRS"
+              "type": "Standard_LRS"
             },
             "constraints": {
-              "required": true
+              "required": true,
+              "excludedTypes": [
+                "Premium_LRS"
+              ]
             }
           }
         ]
