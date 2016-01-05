@@ -8,11 +8,34 @@
         "description": "The location where the solution will be deployed."
       }
     },
-    "newStorageAccountName": {
+    "storageAccountNewOrExisting": {
+      "type": "string",
+      "allowedValues": [
+        "new",
+        "existing"
+      ]
+    },
+    "storageAccountName": {
       "type": "string",
       "metadata": {
         "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
       }
+    },
+    "storageAccountType": {
+      "type": "string",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_ZRS",
+        "Premium_LRS"
+      ]
+    },
+    "authenticationType": {
+      "type": "string",
+      "allowedValues": [
+        "password",
+        "sshPublicKey"
+      ]
     },
     "adminUsername": {
       "type": "string",
@@ -22,8 +45,16 @@
     },
     "adminPassword": {
       "type": "securestring",
+      "defaultValue": "", 
       "metadata": {
-        "description": "Password for the Virtual Machine."
+        "description": "Password for the Virtual Machine. Not used if authenticationType of sshPublicKey."
+      }
+    },
+    "sshPublicKey": {
+      "type": "string",
+      "defaultValue": "", 
+      "metadata": {
+        "description": "SSH RSA public key file as a string. Not used if authenticationType of password."
       }
     },
     "mySQLPassword": {
@@ -88,7 +119,6 @@
     "sql_subnet_name": "Subnet-2",
     "sql_subnet_prefix": "10.0.1.0/24",
     "sql_private_ip": "10.0.1.4",
-    "storageAccountType": "Standard_LRS",
     "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
@@ -102,9 +132,50 @@
     "sql_osdisk_name": "sql-osdisk",
     "sql_nic_name": "sql-nic",
     "sql_vm_name": "sql-prestashop",
-    "fqdn": "[concat(parameters('dnsNameForPublicIP'),'.',resourceGroup().location,'.cloudapp.azure.com')]",
+    "fqdn": "[concat(parameters('dnsNameForPublicIP'),'.',parameters('location'),'.cloudapp.azure.com')]",
     "sharedBaseUrl": "https://raw.githubusercontent.com/tomconte/azure-quickstart-templates/master/shared_scripts/ubuntu/",
     "templateBaseUrl": "https://raw.githubusercontent.com/Quetzacoalt91/azure-quickstart-templates/master/prestashop/",
+    "storageTemplateLink": "[concat(variables('templateBaseUrl'), parameters('storageAccountNewOrExisting'), 'StorageAccount.json')]",
+    "osProfile_front_password": {
+      "computerName": "[variables('front_vm_name')]",
+      "adminUsername": "[parameters('adminUsername')]",
+      "adminPassword": "[parameters('adminPassword')]"
+    },
+    "osProfile_front_sshPublicKey": {
+      "computerName": "[variables('front_vm_name')]",
+      "adminUsername": "[parameters('adminUsername')]",
+      "linuxConfiguration": {
+        "disablePasswordAuthentication": "true",
+        "ssh": {
+          "publicKeys": [
+            {
+              "path": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
+              "keyData": "[parameters('sshPublicKey')]"
+            }
+          ]
+        }
+      }
+    },
+    "osProfile_sql_password": {
+      "computerName": "[variables('sql_vm_name')]",
+      "adminUsername": "[parameters('adminUsername')]",
+      "adminPassword": "[parameters('adminPassword')]"
+    },
+    "osProfile_sql_sshPublicKey": {
+      "computerName": "[variables('sql_vm_name')]",
+      "adminUsername": "[parameters('adminUsername')]",
+      "linuxConfiguration": {
+        "disablePasswordAuthentication": "true",
+        "ssh": {
+          "publicKeys": [
+            {
+              "path": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
+              "keyData": "[parameters('sshPublicKey')]"
+            }
+          ]
+        }
+      }
+    },
     "tshirtSizeSmall": {
       "front_vm_size": "Standard_A1",
       "sql_vm_size": "Standard_A1",
@@ -124,12 +195,26 @@
   },
   "resources": [
     {
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[parameters('newStorageAccountName')]",
-      "apiVersion": "2015-06-15",
-      "location": "[parameters('location')]",
+      "apiVersion": "2015-01-01",
+      "name": "storageTemplate",
+      "type": "Microsoft.Resources/deployments",
       "properties": {
-        "accountType": "[variables('storageAccountType')]"
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('storageTemplateLink')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "storageAccountName": {
+            "value": "[parameters('storageAccountName')]"
+          },
+          "storageAccountType": {
+            "value" : "[parameters('storageAccountType')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          }
+        }
       }
     },
     {
@@ -226,7 +311,7 @@
       "name": "[variables('front_vm_name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
+        "Microsoft.Resources/deployments/storageTemplate",
         "[concat('Microsoft.Network/networkInterfaces/', variables('front_nic_name'))]"
       ],
       "plan": {
@@ -238,11 +323,7 @@
         "hardwareProfile": {
           "vmSize": "[variables('clusterSpec').front_vm_size]"
         },
-        "osProfile": {
-          "computerName": "[variables('front_vm_name')]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
+        "osProfile": "[variables(concat('osProfile_front_', parameters('authenticationType')))]",
         "storageProfile": {
           "imageReference": {
             "publisher": "[variables('ps_image_publisher')]",
@@ -253,7 +334,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('front_osdisk_name'),'.vhd')]"
+              "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('front_osdisk_name'),'.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -274,18 +355,14 @@
       "name": "[variables('sql_vm_name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
+        "Microsoft.Resources/deployments/storageTemplate",
         "[concat('Microsoft.Network/networkInterfaces/', variables('sql_nic_name'))]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[variables('clusterSpec').sql_vm_size]"
         },
-        "osProfile": {
-          "computerName": "[variables('sql_vm_name')]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
+        "osProfile": "[variables(concat('osProfile_sql_', parameters('authenticationType')))]",
         "storageProfile": {
           "imageReference": {
             "publisher": "[variables('ubuntu_image_publisher')]",
@@ -296,7 +373,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('sql_osdisk_name'),'.vhd')]"
+              "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('sql_osdisk_name'),'.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -309,7 +386,7 @@
               "caching": "None",
               "createOption": "Empty",
               "vhd": {
-                "uri": "[concat('http://', parameters('newStorageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('sql_vm_name'), '-dataDisk0', '.vhd')]"
+                "uri": "[concat('http://', parameters('storageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('sql_vm_name'), '-dataDisk0', '.vhd')]"
               }
             },
             {
@@ -319,7 +396,7 @@
               "caching": "None",
               "createOption": "Empty",
               "vhd": {
-                "uri": "[concat('http://', parameters('newStorageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('sql_vm_name'), '-dataDisk1', '.vhd')]"
+                "uri": "[concat('http://', parameters('storageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('sql_vm_name'), '-dataDisk1', '.vhd')]"
               }
             }
           ]
@@ -378,5 +455,11 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "FQDN": {
+      "value": "[variables('fqdn')]",
+      "type": "string" 
+    }
+  }
 }
