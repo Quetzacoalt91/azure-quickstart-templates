@@ -1,24 +1,33 @@
 {
-  "$schema": "http://schema.management.azure.com/schemas/2015-05-01/deploymentParameters.json#",
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "tshirtSize": {
-      "value": "Large"
-    },
-    "newStorageAccountName": {
-      "value": "testps1410lar"
+      "value": "Small"
     },
     "adminUsername": {
       "value": "azureuser"
+    },
+    "authenticationType": {
+      "value": "password"
     },
     "adminPassword": {
       "value": "Pass123!"
     },
     "mySQLPassword": {
-      "value": "MySQL1234"
+      "value": "Pass123!"
+    },
+    "storageAccountNewOrExisting": {
+      "value": "new"
+    },
+    "storageAccountName": {
+      "value": "testps0501"
+    },
+    "storageAccountType": {
+      "value": "Standard_LRS"
     },
     "dnsNameForPublicIP": {
-      "value": "testps1410lar"
+      "value": "testps0501"
     },
     "adminFirstName": {
       "value": "Thomas"
@@ -30,7 +39,10 @@
       "value": "thomas@conte.com"
     },
     "adminPSPassword": {
-      "value": "Presta123!"
+      "value": "Pass123!"
+    },
+    "location": {
+      "value": "eastus"
     }
   }
 }
