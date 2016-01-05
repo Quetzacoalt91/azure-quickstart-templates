@@ -27,6 +27,50 @@
         }
       },
       {
+        "name": "adminUsername",
+        "type": "Microsoft.Compute.UserNameTextBox",
+        "label": "VM username",
+        "toolTip": "Administrative username for the virtual machines.",
+        "osPlatform": "Linux",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "adminCredentials",
+        "type": "Microsoft.Compute.CredentialsCombo",
+        "label": {
+          "authenticationType": "Authentication type",
+          "password": "Password",
+          "confirmPassword": "Confirm password",
+          "sshPublicKey": "SSH public key"
+        },
+        "constraints": {
+          "required": true
+        },
+        "options": {
+          "hideConfirmation": false
+        },
+        "osPlatform": "Linux"
+      },
+      {
+        "name": "mySQLPassword",
+        "type": "Microsoft.Common.PasswordBox",
+        "label": {
+          "password": "MySQL password",
+          "confirmPassword": "Confirm MySQL password"
+        },
+        "toolTip": "The password for the MySQL administrator account.",
+        "constraints": {
+          "required": true,
+          "regex": "",
+          "validationMessage": ""
+        },
+        "options": {
+          "hideConfirmation": false
+        }
+      },
+      {
         "name": "dnsNameForPublicIP",
         "type": "Microsoft.Common.TextBox",
         "label": "DNS prefix",
@@ -47,56 +91,53 @@
         "bladeTitle": "Deployment Parameters",
         "elements": [
           {
+            "name": "virtualNetwork",
+            "type": "Microsoft.Network.VirtualNetworkCombo",
+            "label": {
+              "virtualNetwork": "Virtual network",
+              "subnets": "Subnets"
+            },
+            "defaultValue": {
+              "name": "vnet-prestashop",
+              "addressPrefixSize": "/16"
+            },
+            "constraints": {
+              "minAddressPrefixSize": "/16"
+            },
+            "subnets": {
+              "subnet1": {
+                "label": "Front subnet",
+                "defaultValue": {
+                  "name": "Subnet-1",
+                  "addressPrefixSize": "/24"
+                },
+                "constraints": {
+                  "minAddressPrefixSize": "/24",
+                  "minAddressCount": 12,
+                  "requireContiguousAddresses": true
+                }
+              },
+              "subnet2": {
+                "label": "MySQL subnet",
+                "defaultValue": {
+                  "name": "Subnet-2",
+                  "addressPrefixSize": "/26"
+                },
+                "constraints": {
+                  "minAddressPrefixSize": "/26",
+                  "minAddressCount": 8,
+                  "requireContiguousAddresses": true
+                }
+              }
+            }
+          },
+          {
             "name": "newStorageAccountName",
             "type": "Microsoft.Storage.StorageAccountSelector",
             "label": "Storage account",
             "toolTip": "Storage account where the VM disks will be stored.",
             "constraints": {
               "required": true
-            }
-          },
-          {
-            "name": "adminUsername",
-            "type": "Microsoft.Compute.UserNameTextBox",
-            "label": "VM username",
-            "toolTip": "Administrative username for the virtual machines.",
-            "osPlatform": "Linux",
-            "constraints": {
-              "required": true
-            }
-          },
-          {
-            "name": "adminPassword",
-            "type": "Microsoft.Common.PasswordBox",
-            "label": {
-              "password": "VM password",
-              "confirmPassword": "Confirm VM password"
-            },
-            "toolTip": "Administrative password for the virtual machines.",
-            "constraints": {
-              "required": true,
-              "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
-              "validationMessage": "The password must be between 6 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
-            },
-            "options": {
-              "hideConfirmation": false
-            }
-          },
-          {
-            "name": "mySQLPassword",
-            "type": "Microsoft.Common.PasswordBox",
-            "label": {
-              "password": "MySQL password",
-              "confirmPassword": "Confirm MySQL password"
-            },
-            "toolTip": "The password for the MySQL administrator account.",
-            "constraints": {
-              "required": true,
-              "regex": "",
-              "validationMessage": ""
-            },
-            "options": {
-              "hideConfirmation": false
             }
           }
         ]
@@ -164,9 +205,18 @@
     "outputs": {
       "tshirtSize": "[basics('tshirtSize')]",
       "dnsNameForPublicIP": "[basics('dnsNameForPublicIP')]",
-      "adminUsername": "[steps('deploymentDetails').adminUsername]",
-      "adminPassword": "[steps('deploymentDetails').adminPassword]",
-      "mySQLPassword": "[steps('deploymentDetails').mySQLPassword]",
+      "vnetNewOrExisting": "[steps('deploymentDetails').virtualNetwork.newOrExisting]",
+      "vnetName": "[steps('deploymentDetails').virtualNetwork.name]",
+      "vnetPrefix": "[steps('deploymentDetails').virtualNetwork.addressPrefix]",
+      "vnetSubnet1Name": "[steps('deploymentDetails').virtualNetwork.subnets.subnet1.name]",
+      "vnetSubnet1Prefix": "[steps('deploymentDetails').virtualNetwork.subnets.subnet1.prefix]",
+      "vnetSubnet2Name": "[steps('deploymentDetails').virtualNetwork.subnets.subnet2.name]",
+      "vnetSubnet2Prefix": "[steps('deploymentDetails').virtualNetwork.subnets.subnet2.prefix]",
+      "adminUsername": "[basics('adminUsername')]",
+      "authenticationType": "[basics('adminCredentials').authenticationType]",
+      "adminPassword": "[basics('adminCredentials').password]",
+      "sshPublicKey": "[basics('adminCredentials').sshPublicKey]",
+      "mySQLPassword": "[basics('mySQLPassword')]",
       "newStorageAccountName": "[steps('deploymentDetails').newStorageAccountName.name]",
       "adminFirstName": "[steps('prestashopInfo').adminFirstName]",
       "adminLastName": "[steps('prestashopInfo').adminLastName]",
