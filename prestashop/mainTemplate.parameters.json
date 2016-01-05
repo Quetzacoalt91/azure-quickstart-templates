@@ -9,16 +9,16 @@
       "value": "azureuser"
     },
     "authenticationType": {
-      "value": "password"
+      "value": "sshPublicKey"
     },
-    "adminPassword": {
-      "value": "Pass123!"
+    "sshPublicKey": {
+      "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUBnwVgwPs1U0D0wUdOtIllMdaIxC6dpKijgP3mapZuHdsfxjG9ojAkjyuh1rLUOZHW5b2TRdV3+BdiAl7yyepZ6sAzm9iEn/W/xR1Q6XP/zAVJ/AcNn3GnJ6WfIUIyOHKUsH/8SxixPcqtH0NpTrw1jtUO19TjyRF1k6OPnW2VrG8sdEn4OaUw2Ftx3sK2mtf1UB8MazyI8xslJnu2DzL1coeKbgi6RiUzwThU5u9T0wssxFzjwras2nBlChiBjb1EBN1EM/97/960uTBod55QEKCRMTD0TQny/zs/rPu1IwxaDExsRKzq028/N9e6GZWuFh6hZ6XZt3+RPUjUpHj"
     },
     "mySQLPassword": {
       "value": "Pass123!"
     },
     "storageAccountNewOrExisting": {
-      "value": "new"
+      "value": "existing"
     },
     "storageAccountName": {
       "value": "testps0501"
@@ -42,7 +42,7 @@
       "value": "Pass123!"
     },
     "location": {
-      "value": "eastus"
+      "value": "westeurope"
     }
   }
 }
