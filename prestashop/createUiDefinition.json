@@ -76,15 +76,6 @@
         "options": {
           "hideConfirmation": false
         }
-      },
-      {
-        "name": "dnsNameForPublicIP",
-        "type": "Microsoft.Common.TextBox",
-        "label": "DNS prefix",
-        "toolTip": "This prefix will determine the public DNS name for the deployment.",
-        "constraints": {
-          "required": true
-        }
       }
     ],
     "steps": [
@@ -136,6 +127,21 @@
                   "requireContiguousAddresses": true
                 }
               }
+            }
+          },
+          {
+            "name": "publicIp",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "Public IP address",
+              "domainNameLabel": "Domain Name prefix"
+            },
+            "defaultValue": {
+              "publicIpAddressName": "myPublicIP"
+            },
+            "options": {
+              "hideNone": true,
+              "hideDomainNameLabel": false
             }
           },
           {
@@ -211,7 +217,6 @@
     ],
     "outputs": {
       "tshirtSize": "[basics('tshirtSize')]",
-      "dnsNameForPublicIP": "[basics('dnsNameForPublicIP')]",
       "vnetNewOrExisting": "[steps('deploymentDetails').virtualNetwork.newOrExisting]",
       "vnetName": "[steps('deploymentDetails').virtualNetwork.name]",
       "vnetPrefix": "[steps('deploymentDetails').virtualNetwork.addressPrefix]",
@@ -227,6 +232,7 @@
       "storageAccountNewOrExisting": "[steps('deploymentDetails').storageAccount.newOrExisting]",
       "storageAccountName": "[steps('deploymentDetails').storageAccount.name]",
       "storageAccountType": "[steps('deploymentDetails').storageAccount.type]",
+      "dnsNameForPublicIP": "[steps('deploymentDetails').publicIp.domainNameLabel]",
       "adminFirstName": "[steps('prestashopInfo').adminFirstName]",
       "adminLastName": "[steps('prestashopInfo').adminLastName]",
       "adminEmail": "[steps('prestashopInfo').adminEmail]",
