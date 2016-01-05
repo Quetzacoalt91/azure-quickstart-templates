@@ -61,21 +61,28 @@
         ]
       },
       {
-        "name": "mySQLPassword",
-        "type": "Microsoft.Common.PasswordBox",
-        "label": {
-          "password": "MySQL password",
-          "confirmPassword": "Confirm MySQL password"
-        },
-        "toolTip": "The password for the MySQL administrator account.",
-        "constraints": {
-          "required": true,
-          "regex": "",
-          "validationMessage": ""
-        },
-        "options": {
-          "hideConfirmation": false
-        }
+        "name": "section2",
+        "type": "Microsoft.Common.Section",
+        "label": "MySQL Credentials",
+        "elements": [
+          {
+            "name": "mySQLPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "MySQL password",
+              "confirmPassword": "Confirm MySQL password"
+            },
+            "toolTip": "The password for the MySQL administrator account.",
+            "constraints": {
+              "required": true,
+              "regex": "",
+              "validationMessage": ""
+            },
+            "options": {
+              "hideConfirmation": false
+            }
+          }
+        ]
       }
     ],
     "steps": [
@@ -179,11 +186,11 @@
     ],
     "outputs": {
       "tshirtSize": "[basics('tshirtSize')]",
-      "adminUsername": "[basics('adminUsername')]",
+      "adminUsername": "[basics('section1').adminUsername]",
       "authenticationType": "[basics('section1').adminCredentials.authenticationType]",
       "adminPassword": "[basics('section1').adminCredentials.password]",
       "sshPublicKey": "[basics('section1').adminCredentials.sshPublicKey]",
-      "mySQLPassword": "[basics('mySQLPassword')]",
+      "mySQLPassword": "[basics('section2').mySQLPassword]",
       "storageAccountNewOrExisting": "[steps('deploymentDetails').storageAccount.newOrExisting]",
       "storageAccountName": "[steps('deploymentDetails').storageAccount.name]",
       "storageAccountType": "[steps('deploymentDetails').storageAccount.type]",
