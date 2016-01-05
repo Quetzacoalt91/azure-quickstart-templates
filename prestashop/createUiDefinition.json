@@ -27,31 +27,38 @@
         }
       },
       {
-        "name": "adminUsername",
-        "type": "Microsoft.Compute.UserNameTextBox",
-        "label": "VM username",
-        "toolTip": "Administrative username for the virtual machines.",
-        "osPlatform": "Linux",
-        "constraints": {
-          "required": true
-        }
-      },
-      {
-        "name": "adminCredentials",
-        "type": "Microsoft.Compute.CredentialsCombo",
-        "label": {
-          "authenticationType": "Authentication type",
-          "password": "Password",
-          "confirmPassword": "Confirm password",
-          "sshPublicKey": "SSH public key"
-        },
-        "constraints": {
-          "required": true
-        },
-        "options": {
-          "hideConfirmation": false
-        },
-        "osPlatform": "Linux"
+        "name": "section1",
+        "type": "Microsoft.Common.Section",
+        "label": "VM Credentials",
+        "elements": [
+          {
+            "name": "adminUsername",
+            "type": "Microsoft.Compute.UserNameTextBox",
+            "label": "VM username",
+            "toolTip": "Administrative username for the virtual machines.",
+            "osPlatform": "Linux",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "adminCredentials",
+            "type": "Microsoft.Compute.CredentialsCombo",
+            "label": {
+              "authenticationType": "Authentication type",
+              "password": "Password",
+              "confirmPassword": "Confirm password",
+              "sshPublicKey": "SSH public key"
+            },
+            "constraints": {
+              "required": true
+            },
+            "options": {
+              "hideConfirmation": false
+            },
+            "osPlatform": "Linux"
+          }
+        ]
       },
       {
         "name": "mySQLPassword",
@@ -132,7 +139,7 @@
             }
           },
           {
-            "name": "newStorageAccountName",
+            "name": "storageAccount",
             "type": "Microsoft.Storage.StorageAccountSelector",
             "label": "Storage account",
             "toolTip": "Storage account where the VM disks will be stored.",
@@ -209,15 +216,17 @@
       "vnetName": "[steps('deploymentDetails').virtualNetwork.name]",
       "vnetPrefix": "[steps('deploymentDetails').virtualNetwork.addressPrefix]",
       "vnetSubnet1Name": "[steps('deploymentDetails').virtualNetwork.subnets.subnet1.name]",
-      "vnetSubnet1Prefix": "[steps('deploymentDetails').virtualNetwork.subnets.subnet1.prefix]",
+      "vnetSubnet1Prefix": "[steps('deploymentDetails').virtualNetwork.subnets.subnet1.addressPrefix]",
       "vnetSubnet2Name": "[steps('deploymentDetails').virtualNetwork.subnets.subnet2.name]",
-      "vnetSubnet2Prefix": "[steps('deploymentDetails').virtualNetwork.subnets.subnet2.prefix]",
+      "vnetSubnet2Prefix": "[steps('deploymentDetails').virtualNetwork.subnets.subnet2.addressPrefix]",
       "adminUsername": "[basics('adminUsername')]",
-      "authenticationType": "[basics('adminCredentials').authenticationType]",
-      "adminPassword": "[basics('adminCredentials').password]",
-      "sshPublicKey": "[basics('adminCredentials').sshPublicKey]",
+      "authenticationType": "[basics('section1').adminCredentials.authenticationType]",
+      "adminPassword": "[basics('section1').adminCredentials.password]",
+      "sshPublicKey": "[basics('section1').adminCredentials.sshPublicKey]",
       "mySQLPassword": "[basics('mySQLPassword')]",
-      "newStorageAccountName": "[steps('deploymentDetails').newStorageAccountName.name]",
+      "storageAccountNewOrExisting": "[steps('deploymentDetails').storageAccount.newOrExisting]",
+      "storageAccountName": "[steps('deploymentDetails').storageAccount.name]",
+      "storageAccountType": "[steps('deploymentDetails').storageAccount.type]",
       "adminFirstName": "[steps('prestashopInfo').adminFirstName]",
       "adminLastName": "[steps('prestashopInfo').adminLastName]",
       "adminEmail": "[steps('prestashopInfo').adminEmail]",
