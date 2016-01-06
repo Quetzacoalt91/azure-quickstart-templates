@@ -141,7 +141,7 @@
     "sql_nic_name": "sql-nic",
     "sql_vm_name": "sql-prestashop",
     "fqdn": "[concat(parameters('dnsNameForPublicIP'),'.',parameters('location'),'.cloudapp.azure.com')]",
-    "storageTemplateLink": "[concat(variables('templateBaseUrl'), '/', parameters('storageAccountNewOrExisting'), 'StorageAccount.json')]",
+    "storageTemplateLink": "[concat(parameters('templateBaseUrl'), '/', parameters('storageAccountNewOrExisting'), 'StorageAccount.json')]",
     "osProfile_front_password": {
       "computerName": "[variables('front_vm_name')]",
       "adminUsername": "[parameters('adminUsername')]",
@@ -430,9 +430,9 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "[concat(variables('templateBaseUrl'), '/install-mysql.sh')]",
-            "[concat(variables('templateBaseUrl'), '/vm-disk-utils-0.1.sh')]",
-            "[concat(variables('templateBaseUrl'), '/mysql-azure-', parameters('tshirtSize'), '.cnf')]"
+            "[concat(parameters('templateBaseUrl'), '/install-mysql.sh')]",
+            "[concat(parameters('templateBaseUrl'), '/vm-disk-utils-0.1.sh')]",
+            "[concat(parameters('templateBaseUrl'), '/mysql-azure-', parameters('tshirtSize'), '.cnf')]"
           ]
         },
         "protectedSettings": {
@@ -455,9 +455,9 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "[concat(variables('templateBaseUrl'), '/install-prestashop.sh')]",
-            "[concat(variables('templateBaseUrl'), '/000-default.conf')]",
-            "[concat(variables('templateBaseUrl'), '/php.ini')]"
+            "[concat(parameters('templateBaseUrl'), '/install-prestashop.sh')]",
+            "[concat(parameters('templateBaseUrl'), '/000-default.conf')]",
+            "[concat(parameters('templateBaseUrl'), '/php.ini')]"
           ]
         },
         "protectedSettings": {
