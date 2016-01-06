@@ -141,7 +141,6 @@
     "sql_nic_name": "sql-nic",
     "sql_vm_name": "sql-prestashop",
     "fqdn": "[concat(parameters('dnsNameForPublicIP'),'.',parameters('location'),'.cloudapp.azure.com')]",
-    "sharedBaseUrl": "https://raw.githubusercontent.com/tomconte/azure-quickstart-templates/master/shared_scripts/ubuntu/",
     "storageTemplateLink": "[concat(variables('templateBaseUrl'), '/', parameters('storageAccountNewOrExisting'), 'StorageAccount.json')]",
     "osProfile_front_password": {
       "computerName": "[variables('front_vm_name')]",
@@ -432,7 +431,7 @@
         "settings": {
           "fileUris": [
             "[concat(variables('templateBaseUrl'), '/install-mysql.sh')]",
-            "[concat(variables('sharedBaseUrl'), 'vm-disk-utils-0.1.sh')]",
+            "[concat(variables('templateBaseUrl'), '/vm-disk-utils-0.1.sh')]",
             "[concat(variables('templateBaseUrl'), '/mysql-azure-', parameters('tshirtSize'), '.cnf')]"
           ]
         },
