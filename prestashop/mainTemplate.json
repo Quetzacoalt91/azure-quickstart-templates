@@ -434,7 +434,9 @@
             "[concat(variables('templateBaseUrl'), '/install-mysql.sh')]",
             "[concat(variables('sharedBaseUrl'), 'vm-disk-utils-0.1.sh')]",
             "[concat(variables('templateBaseUrl'), '/mysql-azure-', parameters('tshirtSize'), '.cnf')]"
-          ],
+          ]
+        },
+        "protectedSettings": {
           "commandToExecute": "[concat('sh install-mysql.sh ', parameters('mySQLPassword'))]"
         }
       }
@@ -457,7 +459,9 @@
             "[concat(variables('templateBaseUrl'), '/install-prestashop.sh')]",
             "[concat(variables('templateBaseUrl'), '/000-default.conf')]",
             "[concat(variables('templateBaseUrl'), '/php.ini')]"
-          ],
+          ]
+        },
+        "protectedSettings": {
           "commandToExecute": "[concat('sh install-prestashop.sh ', variables('fqdn'), ' ', variables('sql_private_ip'), ' ', parameters('mySQLPassword'), ' ', parameters('adminFirstName'), ' ', parameters('adminLastName'), ' ', parameters('adminEmail'), ' ', parameters('adminPSPassword'))]"
         }
       }
