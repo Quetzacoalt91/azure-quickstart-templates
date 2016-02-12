@@ -307,8 +307,8 @@
       "name": "[variables('front_nic_name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
-        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+        "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]",
+        "Microsoft.Resources/deployments/vnetTemplate"
       ],
       "properties": {
         "ipConfigurations": [
@@ -317,7 +317,7 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddressName'))]"
               },
               "subnet": {
                 "id": "[variables('front_subnet_ref')]"
@@ -333,7 +333,7 @@
       "name": "[variables('sql_nic_name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+        "Microsoft.Resources/deployments/vnetTemplate"
       ],
       "properties": {
         "ipConfigurations": [
