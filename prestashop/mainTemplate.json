@@ -106,6 +106,38 @@
         "description": "Internal name for the Public IP address."
       }
     },
+    "vnetNewOrExisting": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing"
+      ]
+    },
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "vnet-prestashop"
+    },
+    "vnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/16"
+    },
+    "vnetSubnet1Name": {
+      "type": "string",
+      "defaultValue": "front-subnet"
+    },
+    "vnetSubnet1Prefix": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/24"
+    },
+    "vnetSubnet2Name": {
+      "type": "string",
+      "defaultValue": "sql-subnet"
+    },
+    "vnetSubnet2Prefix": {
+      "type": "string",
+      "defaultValue": "10.0.1.0/24"
+    },
     "tshirtSize": {
       "type": "string",
       "defaultValue": "Small",
@@ -126,15 +158,9 @@
     "ubuntu_image_publisher": "Canonical",
     "ubuntu_image_offer": "UbuntuServer",
     "ubuntu_image_sku": "14.04.3-LTS",
-    "vnet_addr_prefix": "10.0.0.0/16",
-    "front_subnet_name": "Subnet-1",
-    "front_subnet_prefix": "10.0.0.0/24",
-    "sql_subnet_name": "Subnet-2",
-    "sql_subnet_prefix": "10.0.1.0/24",
     "sql_private_ip": "10.0.1.4",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
-    "virtualNetworkName": "vnet-prestashop",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "front_subnet_ref": "[concat(variables('vnetID'),'/subnets/',variables('front_subnet_name'))]",
     "sql_subnet_ref": "[concat(variables('vnetID'),'/subnets/',variables('sql_subnet_name'))]",
@@ -146,6 +172,7 @@
     "sql_vm_name": "sql-prestashop",
     "fqdn": "[concat(parameters('dnsNameForPublicIP'),'.',parameters('location'),'.cloudapp.azure.com')]",
     "storageTemplateLink": "[concat(parameters('templateBaseUrl'), '/', parameters('storageAccountNewOrExisting'), 'StorageAccount.json')]",
+    "vnetTemplateLink": "[concat(parameters('templateBaseUrl'), '/', parameters('vnetNewOrExisting'), 'VirtualNetwork.json')]",
     "osProfile_front_password": {
       "computerName": "[variables('front_vm_name')]",
       "adminUsername": "[parameters('adminUsername')]",
@@ -240,30 +267,38 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
-      "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('virtualNetworkName')]",
-      "location": "[parameters('location')]",
+      "apiVersion": "2015-01-01",
+      "name": "vnetTemplate",
+      "type": "Microsoft.Resources/deployments",
       "properties": {
-        "addressSpace": {
-          "addressPrefixes": [
-            "[variables('vnet_addr_prefix')]"
-          ]
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('vnetTemplateLink')]",
+          "contentVersion": "1.0.0.0"
         },
-        "subnets": [
-          {
-            "name": "[variables('front_subnet_name')]",
-            "properties": {
-              "addressPrefix": "[variables('front_subnet_prefix')]"
-            }
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
           },
-          {
-            "name": "[variables('sql_subnet_name')]",
-            "properties": {
-              "addressPrefix": "[variables('sql_subnet_prefix')]"
-            }
+          "vnetName": {
+            "value": "[parameters('vnetName')]"
+          },
+          "vnetPrefix": {
+            "value": "[parameters('vnetPrefix')]"
+          },
+          "vnetSubnet1Name": {
+            "value": "[parameters('vnetSubnet1Name')]"
+          },
+          "vnetSubnet1Prefix": {
+            "value": "[parameters('vnetSubnet1Prefix')]"
+          },
+          "vnetSubnet2Name": {
+            "value": "[parameters('vnetSubnet2Name')]"
+          },
+          "vnetSubnet2Prefix": {
+            "value": "[parameters('vnetSubnet2Prefix')]"
           }
-        ]
+        }
       }
     },
     {
