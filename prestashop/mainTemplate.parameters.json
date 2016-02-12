@@ -36,19 +36,19 @@
     "value": "vnet-prestashop"
   },
   "vnetPrefix": {
-    "value": "10.0.0.0/16"
+    "value": "10.2.0.0/16"
   },
   "vnetSubnet1Name": {
     "value": "front-subnet"
   },
   "vnetSubnet1Prefix": {
-    "value": "10.0.0.0/24"
+    "value": "10.2.0.0/24"
   },
   "vnetSubnet2Name": {
     "value": "sql-subnet"
   },
   "vnetSubnet2Prefix": {
-    "value": "10.0.1.0/24"
+    "value": "10.2.1.0/24"
   },
   "adminFirstName": {
     "value": "John"
