@@ -75,8 +75,8 @@
             "toolTip": "The password for the MySQL administrator account.",
             "constraints": {
               "required": true,
-              "regex": "",
-              "validationMessage": ""
+              "regex": "^.{8,}$",
+              "validationMessage": "Password must contain at least 8 characters."
             },
             "options": {
               "hideConfirmation": false
@@ -103,11 +103,17 @@
               "domainNameLabel": "Domain Name prefix"
             },
             "defaultValue": {
-              "publicIpAddressName": "myPublicIP"
+              "publicIpAddressName": "frontEndIp"
+            },
+            "constraints": {
+              "required": {
+                "domainNameLabel": true
+              }
             },
             "options": {
               "hideNone": true,
-              "hideDomainNameLabel": false
+              "hideDomainNameLabel": false,
+              "hideExisting": true
             }
           },
           {
@@ -143,7 +149,9 @@
             "defaultValue": "",
             "toolTip": "PrestaShop administrator first name.",
             "constraints": {
-              "required": true
+              "required": true,
+              "regex": "^.{2,}$",
+              "validationMessage": "First name must contain at least 2 characters."
             }
           },
           {
@@ -153,7 +161,9 @@
             "defaultValue": "",
             "toolTip": "PrestaShop administrator last name",
             "constraints": {
-              "required": true
+              "required": true,
+              "regex": "^.{2,}$",
+              "validationMessage": "Last name must contain at least 2 characters."
             }
           },
           {
@@ -164,7 +174,8 @@
             "toolTip": "PrestaShop administrator e-mail",
             "constraints": {
               "required": true,
-              "regex": ""
+              "regex": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
+              "validationMessage": "The e-mail address must be correctly formed."
             }
           },
           {
@@ -177,8 +188,8 @@
             "toolTip": "PrestaShop administrator password",
             "constraints": {
               "required": true,
-              "regex": "",
-              "validationMessage": ""
+              "regex": "^.{8,}$",
+              "validationMessage": "Password must contain at least 8 characters."
             },
             "options": {
               "hideConfirmation": false
