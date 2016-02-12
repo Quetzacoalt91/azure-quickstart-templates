@@ -1,48 +1,68 @@
 {
-  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "tshirtSize": {
-      "value": "Small"
-    },
-    "adminUsername": {
-      "value": "azureuser"
-    },
-    "authenticationType": {
-      "value": "sshPublicKey"
-    },
-    "sshPublicKey": {
-      "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUBnwVgwPs1U0D0wUdOtIllMdaIxC6dpKijgP3mapZuHdsfxjG9ojAkjyuh1rLUOZHW5b2TRdV3+BdiAl7yyepZ6sAzm9iEn/W/xR1Q6XP/zAVJ/AcNn3GnJ6WfIUIyOHKUsH/8SxixPcqtH0NpTrw1jtUO19TjyRF1k6OPnW2VrG8sdEn4OaUw2Ftx3sK2mtf1UB8MazyI8xslJnu2DzL1coeKbgi6RiUzwThU5u9T0wssxFzjwras2nBlChiBjb1EBN1EM/97/960uTBod55QEKCRMTD0TQny/zs/rPu1IwxaDExsRKzq028/N9e6GZWuFh6hZ6XZt3+RPUjUpHj"
-    },
-    "mySQLPassword": {
-      "value": "Pass123!"
-    },
-    "storageAccountNewOrExisting": {
-      "value": "existing"
-    },
-    "storageAccountName": {
-      "value": "testps0501"
-    },
-    "storageAccountType": {
-      "value": "Standard_LRS"
-    },
-    "dnsNameForPublicIP": {
-      "value": "testps0501"
-    },
-    "adminFirstName": {
-      "value": "Thomas"
-    },
-    "adminLastName": {
-      "value": "Conte"
-    },
-    "adminEmail": {
-      "value": "thomas@conte.com"
-    },
-    "adminPSPassword": {
-      "value": "Pass123!"
-    },
-    "location": {
-      "value": "westeurope"
-    }
+  "tshirtSize": {
+    "value": "Small"
+  },
+  "adminUsername": {
+    "value": "azureuser"
+  },
+  "authenticationType": {
+    "value": "password"
+  },
+  "adminPassword": {
+    "value": "Pass123!"
+  },
+  "mySQLPassword": {
+    "value": "Pass123!"
+  },
+  "storageAccountNewOrExisting": {
+    "value": "new"
+  },
+  "storageAccountName": {
+    "value": "testps1202"
+  },
+  "storageAccountType": {
+    "value": "Standard_LRS"
+  },
+  "dnsNameForPublicIP": {
+    "value": "testps1202"
+  },
+  "publicIPAddressName": {
+    "value": "frontEndIp"
+  },
+  "vnetNewOrExisting": {
+    "value": "new"
+  },
+  "vnetName": {
+    "value": "vnet-prestashop"
+  },
+  "vnetPrefix": {
+    "value": "10.0.0.0/16"
+  },
+  "vnetSubnet1Name": {
+    "value": "front-subnet"
+  },
+  "vnetSubnet1Prefix": {
+    "value": "10.0.0.0/24"
+  },
+  "vnetSubnet2Name": {
+    "value": "sql-subnet"
+  },
+  "vnetSubnet2Prefix": {
+    "value": "10.0.1.0/24"
+  },
+  "adminFirstName": {
+    "value": "John"
+  },
+  "adminLastName": {
+    "value": "Doe"
+  },
+  "adminEmail": {
+    "value": "john@doe.com"
+  },
+  "adminPSPassword": {
+    "value": "Pass123!"
+  },
+  "location": {
+    "value": "eastus"
   }
 }
