@@ -209,6 +209,7 @@
       "storageAccountName": "[steps('deploymentDetails').storageAccount.name]",
       "storageAccountType": "[steps('deploymentDetails').storageAccount.type]",
       "dnsNameForPublicIP": "[steps('deploymentDetails').publicIp.domainNameLabel]",
+      "publicIPAddressName": "[steps('deploymentDetails').publicIp.name]",
       "adminFirstName": "[steps('prestashopInfo').adminFirstName]",
       "adminLastName": "[steps('prestashopInfo').adminLastName]",
       "adminEmail": "[steps('prestashopInfo').adminEmail]",

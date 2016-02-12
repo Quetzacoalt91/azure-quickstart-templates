@@ -33,9 +33,7 @@
       "type": "string",
       "allowedValues": [
         "Standard_LRS",
-        "Standard_GRS",
-        "Standard_ZRS",
-        "Premium_LRS"
+        "Standard_GRS"
       ]
     },
     "authenticationType": {
@@ -101,6 +99,13 @@
         "description": "Unique DNS Name for the Public IP used to access the Web Front-End."
       }
     },
+    "publicIPAddressName": {
+      "type": "string",
+      "defaultValue": "frontEndIp",
+      "metadata": {
+        "description": "Internal name for the Public IP address."
+      }
+    },
     "tshirtSize": {
       "type": "string",
       "defaultValue": "Small",
@@ -127,7 +132,6 @@
     "sql_subnet_name": "Subnet-2",
     "sql_subnet_prefix": "10.0.1.0/24",
     "sql_private_ip": "10.0.1.4",
-    "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
     "virtualNetworkName": "vnet-prestashop",
@@ -226,7 +230,7 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('publicIPAddressName')]",
+      "name": "[parameters('publicIPAddressName')]",
       "location": "[parameters('location')]",
       "properties": {
         "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
