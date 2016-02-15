@@ -120,6 +120,10 @@
       "type": "string",
       "defaultValue": "vnet-prestashop"
     },
+    "vnetRG": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]"
+    },
     "vnetPrefix": {
       "type": "string",
       "defaultValue": "10.0.0.0/16"
@@ -164,9 +168,9 @@
     "sql_private_ip": "[concat(variables('sql_ip_bytes')[0], '.', variables('sql_ip_bytes')[1], '.', variables('sql_ip_bytes')[2], '.4')]",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('vnetName'))]",
-    "front_subnet_ref": "[concat(variables('vnetID'),'/subnets/',parameters('vnetSubnet1Name'))]",
-    "sql_subnet_ref": "[concat(variables('vnetID'),'/subnets/',parameters('vnetSubnet2Name'))]",
+    "vnetID": "[resourceId(parameters('vnetRG'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "front_subnet_ref": "[concat(variables('vnetID'), '/subnets/', parameters('vnetSubnet1Name'))]",
+    "sql_subnet_ref": "[concat(variables('vnetID'), '/subnets/', parameters('vnetSubnet2Name'))]",
     "front_osdisk_name": "front-osdisk",
     "front_nic_name": "front-nic",
     "front_vm_name": "front-prestashop",
