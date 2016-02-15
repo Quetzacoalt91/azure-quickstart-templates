@@ -12,6 +12,7 @@
       "type": "string",
       "allowedValues": [
         "Standard_LRS",
+        "Standard_RAGRS",
         "Standard_GRS"
       ]
     }
