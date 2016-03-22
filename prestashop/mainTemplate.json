@@ -165,19 +165,18 @@
     "ubuntu_image_publisher": "Canonical",
     "ubuntu_image_offer": "UbuntuServer",
     "ubuntu_image_sku": "14.04.3-LTS",
-    "sql_ip_bytes": "[split(parameters('vnetSubnet2Prefix'), '.')]",
-    "sql_private_ip": "[concat(variables('sql_ip_bytes')[0], '.', variables('sql_ip_bytes')[1], '.', variables('sql_ip_bytes')[2], '.4')]",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
     "vnetID": "[resourceId(parameters('vnetRG'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "front_subnet_ref": "[concat(variables('vnetID'), '/subnets/', parameters('vnetSubnet1Name'))]",
     "sql_subnet_ref": "[concat(variables('vnetID'), '/subnets/', parameters('vnetSubnet2Name'))]",
-    "front_osdisk_name": "front-osdisk",
-    "front_nic_name": "front-nic",
-    "front_vm_name": "front-prestashop",
-    "sql_osdisk_name": "sql-osdisk",
-    "sql_nic_name": "sql-nic",
-    "sql_vm_name": "sql-prestashop",
+    "unique_string": "[uniqueString(resourceGroup().id, deployment().name)]",
+    "front_osdisk_name": "[concat('front-osdisk-', variables('unique_string'))]",
+    "front_nic_name": "[concat('front-nic-', variables('unique_string'))]",
+    "front_vm_name": "[concat('front-prestashop-', variables('unique_string'))]",
+    "sql_osdisk_name": "[concat('sql-osdisk-', variables('unique_string'))]",
+    "sql_nic_name": "[concat('sql-nic-', variables('unique_string'))]",
+    "sql_vm_name": "[concat('sql-prestashop-', variables('unique_string'))]",
     "fqdn": "[concat(parameters('dnsNameForPublicIP'),'.',parameters('location'),'.cloudapp.azure.com')]",
     "storageTemplateLink": "[concat(parameters('templateBaseUrl'), '/', parameters('storageAccountNewOrExisting'), 'StorageAccount.json')]",
     "vnetTemplateLink": "[concat(parameters('templateBaseUrl'), '/', parameters('vnetNewOrExisting'), 'VirtualNetwork.json')]",
@@ -348,8 +347,7 @@
           {
             "name": "ipconfig2",
             "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables('sql_private_ip')]",
+              "privateIPAllocationMethod": "Dynamic",
               "subnet": {
                 "id": "[variables('sql_subnet_ref')]"
               }
@@ -508,7 +506,7 @@
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('sh install-prestashop.sh ', variables('fqdn'), ' ', variables('sql_private_ip'), ' ', parameters('mySQLPassword'), ' ', parameters('adminFirstName'), ' ', parameters('adminLastName'), ' ', parameters('adminEmail'), ' ', parameters('adminPSPassword'))]"
+          "commandToExecute": "[concat('sh install-prestashop.sh ', variables('fqdn'), ' ', reference(variables('sql_nic_name')).ipConfigurations[0].properties.privateIPAddress, ' ', parameters('mySQLPassword'), ' ', parameters('adminFirstName'), ' ', parameters('adminLastName'), ' ', parameters('adminEmail'), ' ', parameters('adminPSPassword'))]"
         }
       }
     }
